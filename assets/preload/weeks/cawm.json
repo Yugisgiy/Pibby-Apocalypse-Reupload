@@ -1,0 +1,26 @@
+{
+	"storyName": "",
+	"hideFreeplay": false,
+	"weekBackground": "stage",
+	"weekBefore": "finn",
+	"startUnlocked": true,
+	"weekCharacters": [
+		"",
+		"bf",
+		"gf"
+	],
+	"songs": [
+		[
+			"Come Along With Me",
+			"finn",
+			[
+				82,
+				165,
+				235
+			],
+			75
+		]
+	],
+	"hideStoryMode": true,
+	"weekName": "cawm"
+}
