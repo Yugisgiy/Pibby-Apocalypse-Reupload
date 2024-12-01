@@ -90,7 +90,6 @@
 	<!-- <template path='mods' /> -->
 	
 	<!-- assets path="CHANGELOG.md" rename='changelog.txt' -->
-	<assets path="mobile" rename="assets/mobile" if="mobile"/>
 	<assets path="hero.txt" rename='NO HERO REMIX CAN BE ACCESSED.txt' />
 	<assets path="README.txt" rename='README.txt' />
 
