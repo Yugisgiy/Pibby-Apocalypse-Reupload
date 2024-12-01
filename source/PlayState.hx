@@ -372,8 +372,8 @@ class PlayState extends MusicBeatState
 	var storyDifficultyText:String = "";
 	var detailsText:String = "";
 	var detailsPausedText:String = "";
-	private var largeKey: String = "";
 	#end
+	private var largeKey: String = "";
 
 	var touhouBG:FlxSprite;
 	var cnlogo:BGSprite;
@@ -1302,18 +1302,18 @@ class PlayState extends MusicBeatState
 		pibbyFNF = new Shaders.Pibbified();
 		ntscFNF = new Shaders.NtscShader();
 		mawFNF = new Shaders.MAWVHS();
-		crtFNF = new FlxRuntimeShader(RuntimeShaders.monitor, null, 120);
-		distortFNF = new FlxRuntimeShader(RuntimeShaders.distort, null, 120);
-        distortCAWMFNF = new FlxRuntimeShader(RuntimeShaders.distort, null, 120);
-        glowfnf = new FlxRuntimeShader(RuntimeShaders.glowy, null, 120);
-		distortDadFNF = new FlxRuntimeShader(RuntimeShaders.distort, null, 120);
+		crtFNF = new FlxRuntimeShader(RuntimeShaders.monitor, null, 100);
+		distortFNF = new FlxRuntimeShader(RuntimeShaders.distort, null, 100);
+        distortCAWMFNF = new FlxRuntimeShader(RuntimeShaders.distort, null, 100);
+        glowfnf = new FlxRuntimeShader(RuntimeShaders.glowy, null, 100);
+		distortDadFNF = new FlxRuntimeShader(RuntimeShaders.distort, null, 100);
 		invertFNF = new Shaders.InvertShader();
-		chromFNF = new FlxRuntimeShader(RuntimeShaders.chromShader, null, 120);
+		chromFNF = new FlxRuntimeShader(RuntimeShaders.chromShader, null, 100);
 		pincFNF = new Shaders.PincushionShader();
 		blurFNF = new Shaders.BlurShader();
-		blurFNFZoomEdition = new FlxRuntimeShader(RuntimeShaders.blurZoom, null, 120);
-		blurFNFZoomEditionHUD = new FlxRuntimeShader(RuntimeShaders.blurZoom, null, 120);
-		glitchFWFNF = new FlxRuntimeShader(RuntimeShaders.fwGlitch, null, 120);
+		blurFNFZoomEdition = new FlxRuntimeShader(RuntimeShaders.blurZoom, null, 100);
+		blurFNFZoomEditionHUD = new FlxRuntimeShader(RuntimeShaders.blurZoom, null, 100);
+		glitchFWFNF = new FlxRuntimeShader(RuntimeShaders.fwGlitch, null, 100);
 		camVoid.setFilters([new ShaderFilter(pincFNF)]);
 
         distortDadFNF.setFloat("negativity", 0.0);
@@ -1542,7 +1542,7 @@ class PlayState extends MusicBeatState
 		#end
 	}
 
-	public function initLuaShader(name:String, ?glslVersion:Int = 120)
+	public function initLuaShader(name:String, ?glslVersion:Int = 100)
 	{
 		if(!ClientPrefs.shaders) return false;
 
