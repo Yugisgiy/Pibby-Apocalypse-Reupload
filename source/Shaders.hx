@@ -188,9 +188,7 @@ class GreenReplacementShader extends FlxShader { // green screen and replaces th
 class MAWVHS extends FlxShader {
     @:glFragmentSource('
     #pragma header
-    vec2 uv = openfl_TextureCoordv.xy;
-    vec2 fragCoord = openfl_TextureCoordv*openfl_TextureSize;
-    vec2 iResolution = openfl_TextureSize;
+    
     uniform float iTime;
     #define iChannel0 bitmap
     #define iChannel1 bitmap
@@ -249,8 +247,9 @@ class MAWVHS extends FlxShader {
     
     void main()
     {
-    vec2 fragCoord = openfl_TextureCoordv * iResolution;
-        vec2 uv = fragCoord.xy / iResolution.xy;
+    vec2 uv = openfl_TextureCoordv.xy;
+    vec2 fragCoord = openfl_TextureCoordv*openfl_TextureSize;
+    vec2 iResolution = openfl_TextureSize;
         uv = screenDistort(uv);
         vec3 video = getVideo(uv);
         float vigAmt = 3.+.3*sin(iTime + 5.*cos(iTime*5.));
@@ -623,13 +622,12 @@ class ReflectionShader extends FlxShader
   
     #pragma header
 
-    uniform float reflectionY = 0.36;
+    uniform float reflectionY;
 
-
-    vec4 color = vec4(1.0);
     void main()
     {
-      vec2 uv = openfl_TextureCoordv.xy / iResolution.xy;
+      vec4 color = vec4(1.0);
+      vec2 uv = openfl_TextureCoordv.xy;
       if(uv.y <= reflectionY)
       {
         float oy = uv.y;
@@ -637,7 +635,7 @@ class ReflectionShader extends FlxShader
         color = vec4(0.7, 0.85, 1.0, 1.0);
       }
 
-        gl_FragColor = flixel_texture2D(bitmap, uv) * Color;
+        gl_FragColor = flixel_texture2D(bitmap, uv) * color;
     }
   
   ')
@@ -966,9 +964,6 @@ class PincushionShader extends FlxShader
   @:glFragmentSource('    
   #pragma header
 
-  vec2 uv = openfl_TextureCoordv.xy;
-  vec2 fragCoord = openfl_TextureCoordv*openfl_TextureSize;
-  vec2 iResolution = openfl_TextureSize;
   uniform float iTime;
   uniform float Size;
   #define iChannel0 bitmap
@@ -980,6 +975,8 @@ class PincushionShader extends FlxShader
   //Inspired by http://stackoverflow.com/questions/6030814/add-fisheye-effect-to-images-at-runtime-using-opengl-es
   void main()
   {
+  vec2 fragCoord = openfl_TextureCoordv*openfl_TextureSize;
+  vec2 iResolution = openfl_TextureSize;
       vec2 p = fragCoord.xy / iResolution.x;//normalized coords with some cheat
                                                                //(assume 1:1 prop)
       float prop = iResolution.x / iResolution.y;//screen proroption
@@ -1024,14 +1021,11 @@ class PincushionShader extends FlxShader
 class BlurShader extends FlxShader
 {
     @:glFragmentSource('
-
 #pragma header
 
 uniform float iTime;
 
-vec2 iResolution = openfl_TextureSize;
-
-uniform float amount = 0.5;
+uniform float amount;
 
 const float pi = radians(180.);
 const int samples = 20;
@@ -1080,6 +1074,7 @@ vec3 blur(sampler2D sp, vec2 uv, vec2 scale) {
 }
 
 void main() {
+    vec2 iResolution = openfl_TextureSize;
     vec2 fragCoord = openfl_TextureCoordv * iResolution;
 
     vec2 ps = vec2(1.0) / iResolution.xy;
@@ -1101,7 +1096,7 @@ class InvertShader extends FlxShader
     @:glFragmentSource('
     #pragma header
 
-    uniform float binaryIntensity = 1000.0;
+    uniform float binaryIntensity;
     uniform float negativity;
     
     void main(){
@@ -1144,19 +1139,19 @@ class OldTVShader extends FlxShader
     @:glFragmentSource('
         #pragma header
         #define id vec2(0.,1.)
-        #define k 1103515245U
+        const float k = 1103515245.0;
         #define PI 3.141592653
         #define TAU PI * 2.
 
         uniform float iTime;
 
         //prng func, from https://stackoverflow.com/a/52207531
-        vec3 hash(uvec3 x) {
-            x = ((x>>8U)^x.yzx)*k;
-            x = ((x>>8U)^x.yzx)*k;
-            x = ((x>>8U)^x.yzx)*k;         
-            return vec3(x)*(1.0/float(0xffffffffU));
-        }
+        vec3 hash(vec3 x) {
+x = x*0.0 + x.zyx;
+x = x*0.0 + x.zyx;
+x = x*0.0 + x.zyx;
+return vec3(x)*(1.0/float(0xffffffff));
+}
 
         void main() {
             bool flag = false;
@@ -1180,11 +1175,11 @@ class OldTVShader extends FlxShader
                 position2 = mod(iTime - repeatTime, timeMod) / time;
             }
             if (!(uv.y - position > realSize || uv.y - position < -realSize)) {
-                uv.x -= hash(uvec3(0., uv.y * uvyMul, iTime * updateRate2)).x * offsetMul;
+                uv.x -= hash(vec3(0., uv.y * uvyMul, iTime * updateRate2)).x * offsetMul;
                 flag = true;
             } else if (position2 != 99.) {
                 if (!(uv.y - position2 > realSize || uv.y - position2 < -realSize)) {
-                    uv.x -= hash(uvec3(0., uv.y * uvyMul, iTime * updateRate2)).x * offsetMul;
+                    uv.x -= hash(vec3(0., uv.y * uvyMul, iTime * updateRate2)).x * offsetMul;
                     flag = true;
                 }
             }
@@ -1217,7 +1212,7 @@ class OldTVShader extends FlxShader
             float cutoff2 = 0.92;
             float valMul2 = 0.007;
             
-            float val2 = hash(uvec3(uv.y * uvyMul3, 0., iTime * updateRate4)).x;
+            float val2 = hash(vec3(uv.y * uvyMul3, 0., iTime * updateRate4)).x;
             if (val2 > cutoff2) {
                 float adjVal2 = (val2 - cutoff2) * valMul2 * (1. / (1. - cutoff2));
                 if (uv.x < adjVal2) {
@@ -1232,7 +1227,7 @@ class OldTVShader extends FlxShader
             if (!flag2) {
                 float updateRate = 100.0;
                 float mixPercent = 0.05; 
-                col = mix(col, vec4(hash(uvec3(uv * openfl_TextureSize, iTime * updateRate)).rrr, 1.), mixPercent);
+                col = mix(col, vec4(hash(vec3(uv * openfl_TextureSize, iTime * updateRate)).rrr, 1.), mixPercent);
             }
             
             //white sploches
@@ -1244,9 +1239,9 @@ class OldTVShader extends FlxShader
             float falloffMul = 0.7;
             
             if (flag) {
-                float val = hash(uvec3(uv.x * uvxMul, uv.y * uvyMul2, iTime * updateRate3)).x;
+                float val = hash(vec3(uv.x * uvxMul, uv.y * uvyMul2, iTime * updateRate3)).x;
                 if (val > cutoff) {
-                    float offset = hash(uvec3(uv.y * uvyMul2, uv.x * uvxMul, iTime * updateRate3)).x;
+                    float offset = hash(vec3(uv.y * uvyMul2, uv.x * uvxMul, iTime * updateRate3)).x;
                     float adjVal = (val - cutoff) * valMul * (1. / (1. - cutoff));
                     adjVal -= abs((uv.x * uvxMul - (floor(uv.x * uvxMul) + offset)) * falloffMul);
                     adjVal = clamp(adjVal, 0., 1.);
