@@ -55,6 +55,7 @@ jobs:
           haxelib install hxCodec 2.6.1
           haxelib install hxjsonast
           haxelib install hscript
+          haxelib git FNF-mobile-basetools https://github.com/tchcfhvgd/FNF-mobile-basetools
           haxelib git linc_luajit https://github.com/mcagabe19-stuff/linc_luajit-rewriten
           haxelib install extension-androidtools
           haxelib install hxcpp-debug-server
