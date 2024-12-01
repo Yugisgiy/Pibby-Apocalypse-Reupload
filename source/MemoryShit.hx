@@ -36,9 +36,6 @@ class MemoryShit {
         return 0;
 
     ')
-	static function windowsObtainMemory():Dynamic
-		return 0;
-
 	public static function obtainMemory():Dynamic
 	{
 		var memory = windowsObtainMemory();
@@ -62,5 +59,8 @@ class MemoryShit {
 		return memory;
 	}
 	#end
+	static function windowsObtainMemory():Dynamic
+		return 0;
+
 
 }
